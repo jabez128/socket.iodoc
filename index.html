@@ -9,20 +9,20 @@
 </head>
 <body ng-controller="main">
 	<header>
-	<a id='logo' href='/'></a>
+	<a id='logo' href='./'></a>
 	<h1>Socket.io 中文文档</h1>
 	</header>
 	<nav>
 		<ul>	
-			<li class='active'><a href='/'>总览</a></li>
+			<li class='active'><a href='./'>总览</a></li>
 			<li class='divider'></li>
 			<li><a href='./#!/serverapi'>服务端 API</a></li>
-			<li><a href='/clientapi'>客户端 API</a></li>
+			<li><a href='./#!/clientapi'>客户端 API</a></li>
 			<li class='divider'></li>
-			<li><a href='room'>房间和命名空间</a></li>
-			<li><a href='migration'>从0.9版本迁移过来</a></li>
-			<li><a href='multi'>使用多个结节</a></li>
-			<li><a href='debugging'>登录和调试</a></li>
+			<li><a href='./#!/room'>房间和命名空间</a></li>
+			<li><a href='./#!/migration'>从0.9版本迁移过来</a></li>
+			<li><a href='./#!/multi'>使用多个结节</a></li>
+			<li><a href='./#!/debugging'>登录和调试</a></li>
 		</ul>
 	</nav>
 	<section id='content'>
@@ -335,7 +335,7 @@ io.sockets.on('connection', function (socket) {
 </div>
 <div class='clear'></div>
 
-<p>如果你并不关心重连接逻辑以及其他，你可以看看<a class='link'>Engine.IO</a>，它是Socket.
+<p>如果你并不关心重连接逻辑以及其他，你可以看看<a class='link' href='https://github.com/Automattic/engine.io'>Engine.IO</a>，它是Socket.
 	IO使用的一个WebSocket语义传输层。</p>
 </ng-view>
 </section>

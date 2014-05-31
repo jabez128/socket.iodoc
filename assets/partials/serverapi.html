@@ -1,1 +1,14 @@
-<h1>这是serverapi页面</h1>
+<h2 class='grey title-2'>服务器端 API</h2>
+<h3 class='title-3'>Server</h3>
+<p>由<span class='partial-code'>require('socket.io')</span>暴露。</p>  
+<h3 class='title-3'>Server()</h3>  
+<p>创建一个新的<span class='partial-code'>Server</span>。用不用<span class='partial-code'>new</span>操作符都可以。</p>
+<pre>
+	<code>
+		var io = require('socket.io')();
+		//或者
+		var Server = require('socket.io');
+		var io = new Server();
+	</code>
+	<div class='clear'></div>
+</pre>
