@@ -1,0 +1,100 @@
+html{
+  padding-top: 70px;
+  padding-bottom: 70px;
+  font-family: "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "Hiragino Sans font-family: Baskerville, Georgia, "Liberation Serif", STKaiti, "AR PL UKai CN", "AR PL UKai HK", "AR PL UKai TW", "AR PL UKai TW MBE", "AR PL KaitiM GB", KaiTi, KaiTi_GB2312, TW\-Kai, serif;GB", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+header{
+  text-align: center;
+  font-family: inherit;
+}
+#logo{
+  display: inline-block;
+  width:140px;
+  height: 42px;
+  background-image: url(../images/logo.svg);
+  background-size: cover;
+}
+nav{
+	margin-top: 50px;
+	margin-left: 300px;
+	margin-right: 300px;
+}
+nav>ul{
+	text-align: center;
+	margin: auto;
+	list-style-type: none;
+	color: #9E9B9B;
+}
+nav>ul>li{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+nav>ul>li>a{
+	text-decoration: none;
+	color: inherit;
+}
+.active{
+	color: #9B9B9B;
+	font-weight: bold;
+}
+.divider{
+	border-color: rgba(155, 155, 155, .2275);
+	border-style: solid;
+	border-width: 1px 0 0 0;
+}
+section#content{
+	margin-left: 150px;
+	margin-right: 150px;
+	margin-top: 60px;
+	text-align: left;
+}
+.grey{
+	color: #9B9B9B;
+}
+.title-2{
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+.title-3{
+	margin-bottom: 10px;
+}
+pre{
+	border-left: 0.5em solid #D8D8D8;
+	background: white;
+	font-family: "Courier 10 Pitch", Courier, monospace;
+	text-align: left;
+	padding-top: 10px;
+
+}
+pre>code{
+	float: left;
+	color: rgb(119, 119, 119);
+	font-weight: lighter;
+	font-size: 16px;
+	margin-left: 3%;
+	padding: 0px;
+	max-width: 97%;
+	word-wrap: break-word;
+}
+.clear{
+	clear:both;
+}
+.half-first{
+	width:48%;
+	float: left;
+}
+.half-last{
+	width: 48%;
+	float: right;
+	clear: right;
+}
+.partial-code{
+	background: #EEEEEE;
+	margin-left: 5px;
+	margin-right: 5px;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+.link{
+	text-decoration: underline;
+}
