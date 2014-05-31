@@ -5,10 +5,115 @@
 <p>创建一个新的<span class='partial-code'>Server</span>。用不用<span class='partial-code'>new</span>操作符都可以。</p>
 <pre>
 	<code>
-		var io = require('socket.io')();
-		//或者
-		var Server = require('socket.io');
-		var io = new Server();
+var io = require('socket.io')();
+// or
+var Server = require('socket.io');
+var io = new Server();
 	</code>
 	<div class='clear'></div>
 </pre>
+<h3 class='title-3'>Server(opts:Object)</h3>
+<p><span class='partial-code'>Server</span>构造器的第一个或者第二个参数（见下面的例子）可以是一个可选对象。</p>  
+
+<p>下面的可选项是被支持的: </p>
+<ul>
+	<li><span class='partial-code'>serveClient</span>设置 Server#serveClient() 的值</li>
+	<li><span class='partial-code'>path</span>设置 Server#path() 的值</li>
+</ul>
+<p>传递给socket.io的可选参数同样可以传递给<span class='partial-code'>engine.io</span>来创建<span class='path'>Server</span>。具体可以查看 engine.io 的<a class='link' href='https://github.com/learnboost/engine.io#methods-1'>可选项</a>参考文档。</p>  
+
+<h3 class='title-3'>Server(port:Number,opts:Object)</h3>
+<p>将socket.io绑定到一个新的<span class='partial-code'>http.server</span>来监听<span class='partial-code'>port<span></p>
+
+<h3 class='title-3'>Server#serveClient(v:Boolean):Server</h3>
+<p>如果绑定的服务器(参见<span class='partial-code'>Server#attach</span>)的<span class='partial-code'>v</span>是<span class='partial-code'>true</span>，这个服务器将会服务客户端文件。默认情况为<span class='partial-code'>true</span>。</p>
+
+<p>在<span class='partial-code'>attach</span>方法被调用之后，该方法无效。</p>
+
+<pre>
+	<code>
+// 传递一个服务器以及'serveClient'可选项
+var io = require('socket.io')(http, { serveClient: false });
+
+// 一开始不传递服务器，然后再调用方法
+var io = require('socket.io')();
+io.serveClient(false);
+io.attach(http);
+	</code>
+	<div class='clear'></div>
+</pre>
+
+<p>如果不提供任何参数，该方法会放回当前值。</p>  
+
+<h3 class='title-3'>Server#path(v:String):Server</h3>
+
+<p>设置路径<span class='partial-code'>v</span>值，该路径会提供<span class='partial-code'>engine.io</span>和静态文件。默认情况为<span class='partial-code'>/scoket.io</span>。</p>
+
+<p>如果不提供任何参数，该方法会放回当前值。</p>
+
+<h3 class='title-3'>Server#adapter(v:Adapter):Server</h3>
+
+<p>设置适配器<span class='partial-code'>v</span>。默认为socket.io自带的一个基于内存的<span class='partial-code'>Adapter</span>。具体可查看<a class='link' href='https://github.com/learnboost/socket.io-adapter'>socket.io-adapter</a>。</p>  
+
+<p>如果不提供任何参数，该方法会放回当前值。</p>  
+
+<h3 class='title-3'>Server#origins(v:String):Server</h3>
+<p>设置允许的源<span class='partial-code'>v</span>。默认情况下所有的源都是被允许的。</p>
+<p>如果不提供任何参数，该方法会放回当前值。</p>
+
+<h3 class='title-3'>Server#sockets:Namesapce</h3>
+<p>默认(<span class='partial-code'>/</span>)命名空间。</p>
+
+<h3 class='title-3'>Server#attach(srv:http#Server,opts:Object):Server</h3>
+<p>将<span class='partial-code'>Server</span>连同一些提供的<span class='partial-code'>opts<span>(可选)绑定到一个位于<span class='partial-code'>srv</span>的engine.io实例上。</p>  
+
+<h3 class='title-3'>Server#attach(port:Number,opts:Object):Server</h3>
+<p>将<span class='partial-code'>Server</span>连同一些提供的<span class='partial-code'>opts<span>(可选)绑定到一个给定的<span class='partial-code'>port</span>上(可选)。</p>
+
+<h3 class='title-3'>Server#listen</h3>
+<p><span class='partial-code'>Server#attach</span>的同义词。</p>  
+
+<h3 class='title-3'>Server#bind(srv:engine#Server):Server</h3>
+<p>只用于高级用途。将服务器绑定到一个指定的engine.io<span class='partial-code'>Server</span>(或者相容的API)实例。</p>  
+
+<h3 class='title-3'>Server#onconnection(socket:engine#Socket):Server</h3>
+<p>只用于高级用途。从来自于engine.io(或者相容的API)中的<span class='partial-code'>socket</span>创建一个新的<span class='partial-code'>socket.io</span>客户端。</p>  
+
+<h3 class='title-3'>Server#of(nsp:String):Namespace</h3>
+<p>通过路径名标示符<span class='partial-code'>nsp</span>来初始化并提取出给定的<span class='partial-code'>Namespace</span>。</p> 
+
+<p>如果这个命名空间已经被定义过了那么就立刻返回它。</p>
+
+<h3 class='title-3'>Server#emit</h3> 
+<p>发送一个事件到所有连接的客户端。下面的两种方式等价。</p>
+
+<pre>
+	<code>
+var io = require('socket.io')();
+io.sockets.emit('an event sent to all connected clients');
+io.emit('an event sent to all connected clients');
+	</code>
+	<div class='clear'></div>
+</pre>
+
+<p>更多可用的方法，参见下面的<span class='partial-code'>Namespace</span>。<p>
+
+<h3 class='title-3'>Server#use</h3>
+<p>参见下面的<span class='partial-code'>Namespace#use</span></p>
+
+<h3 class='partial-code'>Namespace</h3>
+<p>表示一个连接到由路径名表示的指定作用域的套接字（例如<span class='partial-code'>/chat</span>）。</p>
+
+<p>默认情况下，客户端总是连接到<span class='partial-code'>/</span>。</p>
+
+<h4 class='grey'>事件</h4>
+<ul>
+	<li><span class='partial-code'>connection</span> / <span class='partial-code'>connect</span>。触发一个连接。<br>参数:</li>
+	<li>
+		<ul>
+			<li><span class='partial-code'>Socket</span> 代表进入的套接字。</li>
+		</ul>
+	</li>
+</ul>
+
+
