@@ -23,7 +23,7 @@ var io = new Server();
 <p>传递给socket.io的可选参数同样可以传递给<span class='partial-code'>engine.io</span>来创建<span class='path'>Server</span>。具体可以查看 engine.io 的<a class='link' href='https://github.com/learnboost/engine.io#methods-1'>可选项</a>参考文档。</p>  
 
 <h3 class='title-3'>Server(port:Number,opts:Object)</h3>
-<p>将socket.io绑定到一个新的<span class='partial-code'>http.server</span>来监听<span class='partial-code'>port<span></p>
+<p>将socket.io绑定到一个新的<span class='partial-code'>http.server</span>来监听<span class='partial-code'>port</span></p>
 
 <h3 class='title-3'>Server#serveClient(v:Boolean):Server</h3>
 <p>如果绑定的服务器(参见<span class='partial-code'>Server#attach</span>)的<span class='partial-code'>v</span>是<span class='partial-code'>true</span>，这个服务器将会服务客户端文件。默认情况为<span class='partial-code'>true</span>。</p>
@@ -101,14 +101,14 @@ io.emit('an event sent to all connected clients');
 <h3 class='title-3'>Server#use</h3>
 <p>参见下面的<span class='partial-code'>Namespace#use</span></p>
 
-<h3 class='partial-code'>Namespace</h3>
+<h3 class='title-3'>Namespace</h3>
 <p>表示一个连接到由路径名表示的指定作用域的套接字（例如<span class='partial-code'>/chat</span>）。</p>
 
 <p>默认情况下，客户端总是连接到<span class='partial-code'>/</span>。</p>
 
 <h4 class='grey'>事件</h4>
 <ul>
-	<li><span class='partial-code'>connection</span> / <span class='partial-code'>connect</span>。触发一个连接。<br>参数:</li>
+	<li><span class='partial-code'>connection</span> / <span class='partial-code'>connect</span>。触发一个连接。<br/><br/>参数:</li>
 	<li>
 		<ul>
 			<li><span class='partial-code'>Socket</span> 代表进入的套接字。</li>
@@ -116,4 +116,99 @@ io.emit('an event sent to all connected clients');
 	</li>
 </ul>
 
+<h3 class='title-3'>Namespace#name:String</h3>
+<p>命名空间标示符属性。</p>
 
+<h3 class='title-3'>Namespace#connected:Object</h3>
+<p>连接这个命名空间的<span class='partial-code'>Socket</span>对象的哈希，由<span class='partial-code'>id</span>进行索引。</p>
+
+<h3 class='title-3'>Namespace#use(fn:Function):Namespace</h3>
+<p>注册一个中间件，当有一个套接字进来时便会执行，其中套接字作为第一个参数，第二个参数为可选参数，它是一个函数用于延迟执行注册的下一个中间件。</p>
+
+<pre>
+	<code>
+var io = require('socket.io')();
+io.use(function(socket, next){
+  if (socket.request.headers.cookie) return next();
+  next(new Error('Authentication error'));
+});
+	</code>
+	<div class='clear'></div>
+</pre>
+
+<p>传递给中间件回调函数的错误对象会作为一个特殊的<span class='partial-code'>error</span>数据包被传递给客户端。</p>
+
+<h3 class='title-3'>Socket</h3>
+
+<p>一个<span class='partial-code'>Socket</span>是一个基础类，用于和浏览器客户端进行交互。一个<span class='partial-code'>Socket</span>属于一个特定的<span class='partial-code'>Namespace</span>(默认为<span class='partial-code'>/</span>)并使用一个底层的<span class='partial-code'>Client</span>去交流。</p>
+
+<h3 class='title-3'>Socket#rooms:Array</h3>
+<p>一个字符串列表用于表面该套接字所处的房间。</p>
+
+<h3 class='title-3'>Socket#client:Client</h3>
+<p>一个对于底层<span class='partial-code'>Client</span>对象的引用。</p>
+
+<h3 class='title-3'>Socket#conn:Socket</h3>
+<p>一个对于底层<span class='partial-code'>Client</span>传输链接(engine.io <span class='partial-code'>Socket</span>对象)的引用。</p>
+
+<h3 class='title-3'>Socket#request:Request</h3>
+<p>一个获取器代理，它将返回一个生成底层engine.io<span class='partial-code'>Client</span>的<span class='partial-code'>request</span>的引用。在需要获取请求头部信息例如<span class='partial-code'>Cookie</span>或者<span class='partial-code'>User-Agent</span>时非常有用。</p>  
+
+<h3 class='title-3'>Socket#id:String</h3>
+<p>一个针对套接字会话的特殊标示符，它来自于底层的<span class='partial-code'>Client</span>。</p>
+
+<h3 class='title-3'>Socket#emit(name:String[,...]):Socket</h3>
+<p>通过字符串<span class='partial-code'>name</span>识别发送一个事件到套接字。任何其他的参数也可以包括。</p>
+
+<p>所有的数据结构都被支持，包括<span class='partial-code'>Buffer</span>。JavaScript函数不能被序列化/反序列化。</p>
+
+<pre>
+	<code>
+var io = require('socket.io')();
+io.on('connection', function(socket){
+  socket.emit('an event', { some: 'data' });
+});
+	</code>
+	<div class='clear'></div>
+</pre>
+
+<h3 class='title-3'>Socket#join(name:String[,fn:Function]):Socket</h3>
+<p>将套接字添加到<span class='partial-code'>room</span>，并且触发一个可选的回调函数<span class='partial-code'>fn</span>连同<span class='partial-code'>err</span>签名(如果有的话)。</p>  
+
+<p>套接字会自动成为一个房间的成员，并且由一个会话id确认(参见<span class='partial-code'>Socket#id</span>)。</p>
+
+<p>加入房间的机制由<span class='partial-code'>Adapter</span>控制，它可以被配置(参见<span class='partial-code'>Server#adapter</span>)，默认为<a class='link' href='https://github.com/socket.io/socket.io-adapter'>socket.io-adapter</a>。</p>
+
+<h3 class='title-3'>Socket#leave(name:String[,fn:Function]):Socket</h3>
+<p>从<span class='partial-code'>room</span>中移除套接字，并触发连同一个<span class='partial-code'>err</span>签名调用一个可选的回调函数<span class='partial-code'>fn</span>。</p>
+
+<p class='bold'>当失去连接时套接字自动离开房间。</p>
+
+<p>离开房间的机制由<span class='partial-code'>Adapter</span>控制，它可以被配置(参见<span class='partial-code'>Server#adapter</span>)，默认为<a class='link' href='https://github.com/socket.io/socket.io-adapter'>socket.io-adapter</a>。</p>
+
+<h3 class='title-3'>Socket#to(room:String):Socket</h3>
+
+<h3 class='title-3'>Socket#in(room:String):Socket</h3>
+<p>设置一个修改器，针对于一个事件子序列，这些事件只有在套接字加入指定<span class='partial-code'>room</span时会被广播到所有套接字></p>
+
+<p>为了将事件发送到多个房间，你可以多次调用<span class='partial-code'>to</span>方法。</p>  
+
+<pre>
+	<code>
+var io = require('socket.io')();
+io.on('connection', function(socket){
+  socket.to('others').emit('an event', { some: 'data' });
+});
+	</code>
+	<div class='clear'></div>
+</pre>
+
+<h3 class='title-3'>Client</h3>
+<p><span class='partial-code'>Client</span>类代表一个进来的传输(engine.io)连接。一个<span class='partial-code'>Client</span>可以和属于不同<span class='partial-code'>Namespace</span>的多个多路<span class='partial-code'>Socket</span>先关联。</p>  
+
+<h3 class='title-3'>Client#conn</h3>
+<p>一个对于底层<span class='partial-code'>engine.io</span><span class='partial-code'>Socket</span>连接的引用。</p>
+
+<h3 class='title-3'>Client#request</h3>
+
+<p>一个获取器代理，它将返回一个生成底层engine.io<span class='partial-code'>Client</span>的<span class='partial-code'>request</span>的引用。在需要获取请求头部信息例如<span class='partial-code'>Cookie</span>或者<span class='partial-code'>User-Agent</span>时非常有用。</p>  
