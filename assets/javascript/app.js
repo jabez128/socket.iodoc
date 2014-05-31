@@ -5,7 +5,8 @@ var app = angular.module('doc',['ngRoute'])
 					}).when('/serverapi',{
 						templateUrl : './assets/partials/serverapi.html',
 						});
-					$locationProvider.html5Mode(true);
+
+					$locationProvider.hasPrefix('!');
 			     }).controller('main',function($scope){
 
 			     });
