@@ -6,7 +6,7 @@ var app = angular.module('doc',['ngRoute'])
 						templateUrl : './assets/partials/serverapi.html',
 						});
 
-					$locationProvider.hasPrefix('!');
+					$locationProvider.hashPrefix('!');
 			     }).controller('main',function($scope){
 
 			     });
