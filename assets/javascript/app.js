@@ -5,7 +5,7 @@ var app = angular.module('doc',['ngRoute'])
 					}).when('/serverapi',{
 						templateUrl : './assets/partials/serverapi.html',
 						});
-					$locationProvider.html5mode(true);
+					$locationProvider.html5Mode(true);
 			     }).controller('main',function($scope){
 
 			     });
